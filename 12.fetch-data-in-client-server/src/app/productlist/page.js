@@ -14,7 +14,7 @@ export default async function Page() {
         <h1>Product List</h1>
         {
             products.map((item) => (
-                <div>
+                <div key={item.title}>
                     <h3>Name: {item.title}</h3>
                    <Product price={item.price} />
                 </div>
