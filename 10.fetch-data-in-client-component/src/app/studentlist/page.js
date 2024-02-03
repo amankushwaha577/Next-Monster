@@ -1,47 +1,34 @@
-// 'use client'
-// import List from "../../../lib/List";
-import Link from 'next/link'
+'use client'
+import { useState, useEffect } from 'react';
 
+const PostList = () => {
+  const [posts, setPosts] = useState([]);
 
-async function List() {
-    let data = await fetch("https://dummyjson.com/products");
-    return await data.json();
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
 
-}
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-export default async function StudentList() {
-    let usersData = await List();
+    fetchPosts();
+  }, []); // Empty dependency array means this effect runs once after the initial render
 
-    console.warn("11------apple", usersData.products);
+  return (
+    <div>
+      <h2>Post List 1</h2>
+        <ul>
+          {posts.map((post) => (
+            <li key={post.id}>{post.title}</li>
+          ))}
+        </ul>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            <h1>Student List {usersData.length}</h1>
-            {
-                usersData.products.length ?
-                    usersData.products.map((item) => (<h1>{item.title}</h1>))
-                    : null
-            }
-            {/* <ul>
-                <li> 
-                    <Link href="/studentlist/anil" >Anil</Link>
-                </li>
-                <li> 
-                <Link href="/studentlist/sam" >Sam</Link>
-                </li>
-                <li> 
-                <Link href="/studentlist/peter" >Peter</Link>
-                </li>
-                <li> 
-                <Link href="/studentlist/bruce" >Burce</Link>
-                </li>
-            </ul> */}
-        </div>
-    )
-}
-// export async function getInitialProps(){
-//     let data= await fetch("https://dummyjson.com/products");
-// data = await data.json();
-// console.log("test");
-// return data;
-// }
+export default PostList;
